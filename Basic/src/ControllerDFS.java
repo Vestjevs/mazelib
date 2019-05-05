@@ -3,9 +3,6 @@ import java.util.Random;
 
 public class ControllerDFS {
 
-    public static void main(String[] args) {
-        System.out.println(maze(10, 10, 0, 0));
-    }
 
     public static Surface maze(int numColumns, int numRows, int startColumn, int startRow) {
         Surface surface = new Surface(numColumns, numRows);
@@ -35,6 +32,7 @@ public class ControllerDFS {
         }
         return numCandidates == 0 ? null : candidates[new Random().nextInt(numCandidates)];
     }
+
 
 
 }
