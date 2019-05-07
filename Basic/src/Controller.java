@@ -1,14 +1,16 @@
+import java.util.ArrayDeque;
 import java.util.BitSet;
+import java.util.Deque;
 import java.util.Random;
 
-public class ControllerDFS {
+public class Controller {
 
 
     public static Surface maze(int numColumns, int numRows, int startColumn, int startRow) {
         Surface surface = new Surface(numColumns, numRows);
         int startvertex = surface.vertex(startColumn, startRow);
         BitSet visited = new BitSet(numColumns * numRows);
-        traverseRecursive(surface, startvertex, visited);
+        randomDFSNonrecursive(surface, startvertex, visited);
         return surface;
     }
 
@@ -19,6 +21,25 @@ public class ControllerDFS {
             traverseRecursive(surface, surface.neighbor(v, dir), visited);
         }
 
+    }
+
+    private static void randomDFSNonrecursive(Surface surface, int v, BitSet visited) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        visited.set(v);
+        stack.push(v);
+        while (!stack.isEmpty()) {
+            Direction dir = unvisitedDir(surface, v, visited);
+            if (dir != null) {
+                int neighbor = surface.neighbor(v, dir);
+                surface.addEdge(v, dir);
+                visited.set(neighbor);
+                stack.push(neighbor);
+                v = neighbor;
+            }
+            else {
+                v = stack.pop();
+            }
+        }
     }
 
     private static Direction unvisitedDir(Surface surface, int v, BitSet visited) {

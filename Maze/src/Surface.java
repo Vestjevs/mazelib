@@ -56,11 +56,11 @@ public class Surface {
         StringBuilder builder = new StringBuilder();
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
-                builder.append(hasEdge(vertex(col, row), Direction.EAST) ? "+---" : "+   ");
+                builder.append(!hasEdge(vertex(col, row), Direction.NORTH) ? "+---" : "+   ");
             }
             builder.append("+\n");
             for (int col = 0; col < numCols; col++) {
-                builder.append(hasEdge(vertex(col, row), Direction.NORTH) ? "|   " : "    ");
+                builder.append(!hasEdge(vertex(col, row), Direction.WEST) ? "|   " : "    ");
             }
             builder.append("|\n");
         }
