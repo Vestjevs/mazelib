@@ -7,13 +7,17 @@ public class Controller {
 
 
     public static Grid maze(int numColumns, int numRows) {
-        Random random = new Random();
-        int startColumn = random.nextInt(numColumns);
-        int startRow = random.nextInt(numRows);
+        int startColumn = new Random().nextInt(numColumns);
+        int startRow = new Random().nextInt(numRows);
         Grid grid = new Grid(numColumns, numRows);
         int startvertex = grid.vertex(startColumn, startRow);
         BitSet visited = new BitSet(numColumns * numRows);
-        randomDFSNonrecursive(grid, startvertex, visited);
+        int choice = new Random().nextInt(100);
+        if (choice < 50 && choice >= 0) {
+            randomDFSNonrecursive(grid, startvertex, visited);
+        } else {
+            traverseRecursive(grid, startvertex, visited);
+        }
         return grid;
     }
 
