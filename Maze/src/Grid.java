@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 
 
-public class Surface {
+public class Grid {
     public final int NO_VERTEX = -1;
 
     public final int numCols;
@@ -14,7 +14,7 @@ public class Surface {
         return 4 * v + dir.ordinal();
     }
 
-    public Surface(int numCols, int numRows) {
+    public Grid(int numCols, int numRows) {
         this.numCols = numCols;
         this.numRows = numRows;
         this.edges = new BitSet(numCols * numRows * 4);

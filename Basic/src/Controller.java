@@ -6,54 +6,55 @@ import java.util.Random;
 public class Controller {
 
 
-    public static Surface maze(int numColumns, int numRows, int startColumn, int startRow) {
-        Surface surface = new Surface(numColumns, numRows);
-        int startvertex = surface.vertex(startColumn, startRow);
+    public static Grid maze(int numColumns, int numRows) {
+        Random random = new Random();
+        int startColumn = random.nextInt(numColumns);
+        int startRow = random.nextInt(numRows);
+        Grid grid = new Grid(numColumns, numRows);
+        int startvertex = grid.vertex(startColumn, startRow);
         BitSet visited = new BitSet(numColumns * numRows);
-        randomDFSNonrecursive(surface, startvertex, visited);
-        return surface;
+        randomDFSNonrecursive(grid, startvertex, visited);
+        return grid;
     }
 
-    private static void traverseRecursive(Surface surface, int v, BitSet visited) {
+    private static void traverseRecursive(Grid grid, int v, BitSet visited) {
         visited.set(v);
-        for (Direction dir = unvisitedDir(surface, v, visited); dir != null; dir = unvisitedDir(surface, v, visited)) {
-            surface.addEdge(v, dir);
-            traverseRecursive(surface, surface.neighbor(v, dir), visited);
+        for (Direction dir = unvisitedDir(grid, v, visited); dir != null; dir = unvisitedDir(grid, v, visited)) {
+            grid.addEdge(v, dir);
+            traverseRecursive(grid, grid.neighbor(v, dir), visited);
         }
 
     }
 
-    private static void randomDFSNonrecursive(Surface surface, int v, BitSet visited) {
+    private static void randomDFSNonrecursive(Grid grid, int v, BitSet visited) {
         Deque<Integer> stack = new ArrayDeque<>();
         visited.set(v);
         stack.push(v);
         while (!stack.isEmpty()) {
-            Direction dir = unvisitedDir(surface, v, visited);
+            Direction dir = unvisitedDir(grid, v, visited);
             if (dir != null) {
-                int neighbor = surface.neighbor(v, dir);
-                surface.addEdge(v, dir);
+                int neighbor = grid.neighbor(v, dir);
+                grid.addEdge(v, dir);
                 visited.set(neighbor);
                 stack.push(neighbor);
                 v = neighbor;
-            }
-            else {
+            } else {
                 v = stack.pop();
             }
         }
     }
 
-    private static Direction unvisitedDir(Surface surface, int v, BitSet visited) {
+    private static Direction unvisitedDir(Grid grid, int v, BitSet visited) {
         Direction[] candidates = new Direction[4];
         int numCandidates = 0;
         for (Direction dir : Direction.values()) {
-            int neighbor = surface.neighbor(v, dir);
-            if (neighbor != surface.NO_VERTEX && !visited.get(neighbor)) {
+            int neighbor = grid.neighbor(v, dir);
+            if (neighbor != grid.NO_VERTEX && !visited.get(neighbor)) {
                 candidates[numCandidates++] = dir;
             }
         }
         return numCandidates == 0 ? null : candidates[new Random().nextInt(numCandidates)];
     }
-
 
 
 }
